@@ -10,9 +10,15 @@ namespace villa.Controllers
     public class VillaController :ControllerBase 
     {
         [HttpGet]
-        public IEnumerable<VIllaDTO> GetVillas()
+        public ActionResult<IEnumerable<VIllaDTO>> GetVillas()
         {
-            return VillaStore.VillaList;
+            return Ok(VillaStore.VillaList);
+        }
+
+        [HttpGet("{id:int}")]
+        public ActionResult<VIllaDTO> GetVilla(int id)
+        {
+            return Ok(VillaStore.VillaList.FirstOrDefault(u=>u.Id == id));
         }
     }
     
