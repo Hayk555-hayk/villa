@@ -16,9 +16,25 @@ namespace villa.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VIllaDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<VIllaDTO> GetVilla(int id)
         {
-            return Ok(VillaStore.VillaList.FirstOrDefault(u=>u.Id == id));
+
+            if(id == 0)
+            {
+                return BadRequest();
+            }
+
+            var villa = VillaStore.VillaList.FirstOrDefault(u=>u.Id == id);
+
+            if(villa == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(villa);
         }
     }
     
