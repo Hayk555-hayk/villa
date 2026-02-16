@@ -91,6 +91,31 @@ namespace villa.Controllers
 
             return NoContent();
         }
+
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [HttpPut("{id:int}", Name = "UpdateVilla")]
+        public IActionResult UpdateVilla(int id, [FromBody] VIllaDTO villaDTO)
+        {
+            if(id == 0)
+            {
+                return BadRequest();
+            }
+
+            var villa = VillaStore.VillaList.FirstOrDefault(u => u.Id == id);
+
+            if (villa == null)
+            {
+                return NotFound();
+            }
+
+            villa.Name = villaDTO.Name;
+            villa.Occupancy = villaDTO.Occupancy;
+            villa.Sqft = villaDTO.Sqft;
+
+            return NoContent();
+        }
     }
     
 }
