@@ -10,9 +10,19 @@ namespace villa.Controllers
     [ApiController]
     public class VillaController :ControllerBase 
     {
+
+        private readonly ILogger<VillaController> _logger;
+
+        public VillaController(ILogger<VillaController> logger)
+        {
+            _logger = logger;
+        }
+
+
         [HttpGet]
         public ActionResult<IEnumerable<VIllaDTO>> GetVillas()
         {
+            _logger.LogInformation("Here are villas");
             return Ok(VillaStore.VillaList);
         }
 
@@ -119,7 +129,7 @@ namespace villa.Controllers
         }
 
 
-        [HttpPatch("{id: int}", Name = "UpdatePartialVilla")]
+        [HttpPatch("{id:int}", Name = "UpdatePartialVilla")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VIllaDTO> patchDTO)
@@ -146,5 +156,5 @@ namespace villa.Controllers
             return NoContent();
         }
     }
-    
+    //https://jsonpatch.com/
 }
