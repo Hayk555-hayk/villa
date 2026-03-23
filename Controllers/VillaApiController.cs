@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using villa.Data;
+using villa.logging;
 using villa.Models.Dto;
 
 namespace villa.Controllers
@@ -12,10 +13,12 @@ namespace villa.Controllers
     {
 
         private readonly ILogger<VillaController> _logger;
+        private readonly ILoging _loging;
 
-        public VillaController(ILogger<VillaController> logger)
+        public VillaController(ILogger<VillaController> logger, ILoging loging)
         {
             _logger = logger;
+            _loging = loging;
         }
 
 
@@ -23,6 +26,7 @@ namespace villa.Controllers
         public ActionResult<IEnumerable<VIllaDTO>> GetVillas()
         {
             _logger.LogInformation("Here are villas");
+            _loging.Log("Villa creatin", "Ok");
             return Ok(VillaStore.VillaList);
         }
 
