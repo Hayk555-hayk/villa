@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using villa.logging;
 
@@ -9,6 +10,9 @@ Log.Logger = new LoggerConfiguration().MinimumLevel.Debug()
 .WriteTo.File("log/VillaLogs.txt", rollingInterval: RollingInterval.Day).CreateLogger();
 
 builder.Host.UseSerilog();
+
+builder.Services.AddDbContext<villa.Data.ApplicationDBContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 27))));
 
 builder.Services.AddControllers(
     option =>
