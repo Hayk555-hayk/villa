@@ -5,7 +5,7 @@
 
 # ASP.NET Core
 appsettings.json
-!appsettings.Development.json
+appsettings.Development.json
 
 # dotenv files
 .env
