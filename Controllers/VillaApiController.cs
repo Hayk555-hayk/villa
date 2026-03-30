@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using villa.Data;
 using villa.logging;
 using villa.Models;
@@ -26,18 +27,18 @@ namespace villa.Controllers
 
 
         [HttpGet]
-        public ActionResult<IEnumerable<VIllaDTO>> GetVillas()
+        public async Task<ActionResult<IEnumerable<VillaDto>>> GetVillas()
         {
             _logger.LogInformation("Here are villas");
             _loging.Log("Villa creatin", "Ok");
-            return Ok(_db.Villas.ToList());
+            return Ok(await _db.Villas.ToListAsync());
         }
 
         [HttpGet("{id:int}", Name="GetVilla")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VIllaDTO))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VillaDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<VIllaDTO> GetVilla(int id)
+        public async Task <ActionResult<VillaDto>> GetVilla(int id)
         {
 
             if(id == 0)
@@ -45,7 +46,7 @@ namespace villa.Controllers
                 return BadRequest();
             }
 
-            var villa = _db.Villas.FirstOrDefault(u=>u.Id == id);
+            var villa = await _db.Villas.AsNoTracking().FirstOrDefaultAsync(u=>u.Id == id);
 
             if(villa == null)
             {
@@ -60,7 +61,7 @@ namespace villa.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<VIllaDTO> CreateVilla([FromBody]VIllaDTO villaDTO)
+        public ActionResult<VillaDto> CreateVilla([FromBody] VillaCreateDto villaDTO)
         {
             if(villaDTO == null)
             {
@@ -124,7 +125,7 @@ namespace villa.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut("{id:int}", Name = "UpdateVilla")]
-        public IActionResult UpdateVilla(int id, [FromBody] VIllaDTO villaDTO)
+        public IActionResult UpdateVilla(int id, [FromBody] VillaUpdateDto villaDTO)
         {
             if(id == 0)
             {
@@ -159,7 +160,7 @@ namespace villa.Controllers
         [HttpPatch("{id:int}", Name = "UpdatePartialVilla")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VIllaDTO> patchDTO)
+        public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VillaDto> patchDTO)
         {
             if(patchDTO == null || id == 0)
             {
@@ -168,7 +169,7 @@ namespace villa.Controllers
 
             var villa = _db.Villas.FirstOrDefault(u => u.Id == id);
 
-            VIllaDTO villaDTO = new VIllaDTO()
+            VillaDto villaDTO = new VillaDto()
             {
                 Id = villa.Id,
                 Name = villa.Name,

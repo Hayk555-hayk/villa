@@ -2,17 +2,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace villa.Models.Dto
 {
-    public class VillaDto
+    public class VillaUpdateDto
     {
+        [Required]
         public int Id { get; set;}
         [Required]
         [MaxLength(30)]
         public required string Name {get; set;}
+        [Required]
         public int Sqft {get; set;}
         public string? Details { get; set;}
         [Required]
         public double Rate { get; set;}
+        [Required]
         public int Occupancy { get; set;}
+        [Required]
         public string? ImageUrl { get; set;} = string.Empty;
 
     }    

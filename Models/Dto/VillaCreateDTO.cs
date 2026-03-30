@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace villa.Models.Dto
 {
-    public class VillaDto
+    public class VillaCreateDto
     {
-        public int Id { get; set;}
+        public int Id { get; set; }
         [Required]
         [MaxLength(30)]
         public required string Name {get; set;}
