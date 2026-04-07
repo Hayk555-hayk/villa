@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using villa;
 using villa.logging;
+using villa.Repository;
+using villa.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,7 @@ builder.Services.AddControllers(
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IVillaRepository, VillaRepository>();
 builder.Services.AddSingleton<ILoging, Loging>();
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
